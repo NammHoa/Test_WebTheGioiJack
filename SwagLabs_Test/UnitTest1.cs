@@ -37,6 +37,7 @@ namespace LamHuynhHoaNam_22DH112245_TestScript
             Thread.Sleep(1000);
         }
 
+
         [Test]
         public void TSPVGH01_ThemSanPhamKhiChuaDangNhap()
         {
@@ -233,6 +234,68 @@ namespace LamHuynhHoaNam_22DH112245_TestScript
             Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
         }
         [Test]
+        public void GH_BoTrongSoDienThoaiTrongGH()
+        {
+            DangNhap();
+            driver.FindElement(By.Id("card-component")).Click();
+            Thread.Sleep(1000);
+            driver.FindElement(By.Id("add-to-cart")).Click();
+            Thread.Sleep(1000);
+            //GH
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[2]")).Click();
+            Thread.Sleep(1000);
+            //Tick
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/label[1]/span[1]/input[1]")).Click();
+            Thread.Sleep(1000);
+            //Thay đổi
+            driver.FindElement(By.Id("change-button")).Click();
+            Thread.Sleep(1000);
+            var phoneInput = driver.FindElement(By.Id("basic_phone"));
+            phoneInput.SendKeys(Keys.Control + "a");
+            phoneInput.SendKeys(Keys.Backspace);
+            driver.FindElement(By.XPath("//span[normalize-space()='OK']")).Click();
+            Thread.Sleep(1000);
+            IWebElement announcement = driver.FindElement(By.XPath("//div[@class='ant-form-item-explain-error']"));
+            string actualMessage = announcement.Text;
+            Console.WriteLine($"Thông báo lấy được: {actualMessage}");
+            string expectedMessage = "Vui lòng nhập số điện thoại !";
+            string result = (expectedMessage == actualMessage) ? "Passed" : "Failed";
+            ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet3", actualMessage, result);
+            Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
+        }
+
+        [Test]
+        public void GH_SoDienThoaiBangChuTrongGH()
+        {
+            DangNhap();
+            driver.FindElement(By.Id("card-component")).Click();
+            Thread.Sleep(1000);
+            driver.FindElement(By.Id("add-to-cart")).Click();
+            Thread.Sleep(1000);
+            //GH
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[2]")).Click();
+            Thread.Sleep(1000);
+            //Tick
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/label[1]/span[1]/input[1]")).Click();
+            Thread.Sleep(1000);
+            //Thay đổi
+            driver.FindElement(By.Id("change-button")).Click();
+            Thread.Sleep(1000);
+            var phoneInput = driver.FindElement(By.Id("basic_phone"));
+            phoneInput.SendKeys(Keys.Control + "a");
+            phoneInput.SendKeys(Keys.Backspace);
+            phoneInput.SendKeys("một hai ba");
+            driver.FindElement(By.XPath("//span[normalize-space()='OK']")).Click();
+            Thread.Sleep(1000);
+            IWebElement announcement = driver.FindElement(By.XPath("//div[@class='ant-form-item-explain-error']"));
+            string actualMessage = announcement.Text;
+            Console.WriteLine($"Thông báo lấy được: {actualMessage}");
+            string expectedMessage = "Vui lòng nhập số !";
+            string result = (expectedMessage == actualMessage) ? "Passed" : "Failed";
+            ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet3", actualMessage, result);
+            Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
+        }
+        [Test]
         public void GH_TenDiaChiTaoLao()
         {
             DangNhap();
@@ -264,6 +327,23 @@ namespace LamHuynhHoaNam_22DH112245_TestScript
             Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
         }
 
+        [Test]
+        public void GH_BoTrongGioHang()
+        {
+            DangNhap();    
+            //GH
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[1]/span[1]/*[name()='svg'][1]")).Click();
+            Thread.Sleep(1000);
+
+            string currentUrl = driver.Url;
+            Console.WriteLine($"URL hiện tại: {currentUrl}");
+
+            string expected = "Giỏ hàng trống";
+
+            string result = (currentUrl == expected) ? "Passed" : "Failed";
+            ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet3", currentUrl, result);
+            Assert.That(currentUrl, Is.EqualTo(expected), $"Trang không chuyển hướng đúng, URL hiện tại: {currentUrl}");
+        }
 
         [Test]
         public void GH_XoaSanPhamRaKhoiGioHang()
@@ -334,7 +414,7 @@ namespace LamHuynhHoaNam_22DH112245_TestScript
 
 
         [Test]
-        public void GH_DangXuatConTonTaiSPTrongGHKhong()
+        public void GH_KiemTraGioHangKhiDangXuat()
         {
             DangNhap();
             driver.FindElement(By.Id("card-component")).Click();
@@ -350,7 +430,7 @@ namespace LamHuynhHoaNam_22DH112245_TestScript
             IWebElement announcement = driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[1]/sup[1]/bdi[1]/span[1]/span[1]"));
             string actualMessage = announcement.Text;
             Console.WriteLine($"Thông báo lấy được: {actualMessage}");
-            string expectedMessage = "Không tồn tại sản phẩm trong giỏ hàng";
+            string expectedMessage = "Giỏ hàng bị xóa sau khi đăng xuất";
             string result = (expectedMessage == actualMessage) ? "Passed" : "Failed";
             ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet2", actualMessage, result);
             Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
@@ -364,8 +444,10 @@ namespace LamHuynhHoaNam_22DH112245_TestScript
             Thread.Sleep(1000);
             driver.FindElement(By.Id("add-to-cart")).Click();
             Thread.Sleep(1000);
+            //GH
             driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[1]/span[1]/*[name()='svg'][1]")).Click();
             Thread.Sleep(1000);
+            //TB
             driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[3]/div[1]/div[2]/div[1]/button[1]")).Click();
             Thread.Sleep(1000);
             IWebElement announcement = driver.FindElement(By.ClassName("ant-modal-confirm-title"));
@@ -375,8 +457,127 @@ namespace LamHuynhHoaNam_22DH112245_TestScript
             string result = (expectedMessage == actualMessage) ? "Passed" : "Failed";
             ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet3", actualMessage, result);
             Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
-
         }
+        [Test]
+        public void GH_DatHangKhiGioHangTrong()
+        {
+            DangNhap();
+            //GH
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[1]/span[1]/*[name()='svg'][1]")).Click();
+            Thread.Sleep(1000);
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/button[1]/span[1]")).Click();
+            Thread.Sleep(1000);
+            IWebElement announcement = driver.FindElement(By.XPath("//span[contains(text(),'Vui lòng chọn sản phẩm')]"));
+            string actualMessage = announcement.Text;
+            Console.WriteLine($"Thông báo lấy được: {actualMessage}");
+            string expectedMessage = "Vui lòng chọn sản phẩm";
+            string result = (expectedMessage == actualMessage) ? "Passed" : "Failed";
+            ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet2", actualMessage, result);
+            Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
+        }
+        [Test]
+        public void GH_SPKhiCoGangBamDauTru()
+        {
+            DangNhap();
+            driver.FindElement(By.Id("card-component")).Click();
+            Thread.Sleep(1000);
+            driver.FindElement(By.Id("add-to-cart")).Click();
+            Thread.Sleep(1000);
+            //GH
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[1]/span[1]/*[name()='svg'][1]")).Click();
+            Thread.Sleep(1000);
+            //GH
+            driver.FindElement(By.XPath("//span[@aria-label='minus']//*[name()='svg']")).Click();
+            Thread.Sleep(1000);
+            IWebElement announcement = driver.FindElement(By.XPath("//span[@class='ant-modal-confirm-title']"));
+            string actualMessage = announcement.Text;
+            Console.WriteLine($"Thông báo lấy được: {actualMessage}");
+            string expectedMessage = "Xác nhận xóa sản phẩm";
+            string result = (expectedMessage == actualMessage) ? "Passed" : "Failed";
+            ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet2", actualMessage, result);
+            Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
+        }
+
+        [Test]
+        public void TT_ThanhToanTienMat()
+        {
+            DangNhap();
+            driver.FindElement(By.Id("card-component")).Click();
+            Thread.Sleep(1000);
+            driver.FindElement(By.Id("add-to-cart")).Click();
+            Thread.Sleep(1000);
+            //GH
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[1]/span[1]/*[name()='svg'][1]")).Click();
+            Thread.Sleep(1000);
+            //tick
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]/label[1]/span[1]/input[1]")).Click();
+            Thread.Sleep(1000);
+            //Mua
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/button[1]/span[1]")).Click();
+            Thread.Sleep(1000);
+            //Dat hang
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/button[1]/span[1]")).Click();
+            Thread.Sleep(1000);
+            IWebElement announcement = driver.FindElement(By.XPath("//span[contains(text(),'Đặt hàng thành công')]"));
+            string actualMessage = announcement.Text;
+            Console.WriteLine($"Thông báo lấy được: {actualMessage}");
+            string expectedMessage = "Đặt hàng thành công";
+            string result = (expectedMessage == actualMessage) ? "Passed" : "Failed";
+            ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet2", actualMessage, result);
+            Assert.That(actualMessage, Is.EqualTo(expectedMessage), $"Thông báo hiển thị: {actualMessage}");
+        }
+
+        [Test]
+        public void GH_VoHieuHoaDauCong()
+        {
+            DangNhap();
+            driver.FindElement(By.Id("card-component")).Click();
+            Thread.Sleep(1000);
+            driver.FindElement(By.Id("add-to-cart")).Click();
+            Thread.Sleep(1000);
+            //GH
+            driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[2]/span[1]/span[1]/*[name()='svg'][1]")).Click();
+            Thread.Sleep(1000);
+
+            IWebElement increaseButton = driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[3]/div[1]/div[2]/div[1]/button[2]/span[1]/*[name()='svg'][1]"));
+            Thread.Sleep(1000);
+            for (int i = 0; i < 6; i++)
+            {
+                increaseButton.Click();
+                Thread.Sleep(200);
+            }
+            string pointerEvents = increaseButton.GetCssValue("pointer-events");
+            //độ mờ của nút
+            string opacity = increaseButton.GetCssValue("opacity");
+            bool isDisabled = pointerEvents == "none" || opacity == "0.5";
+            Assert.That(isDisabled, Is.False, "Nút tăng số lương bị vô hiệu hóa");
+        }
+
+
+        [Test]
+        public void NF12_KiemTraGiaoDienResponsive()
+        {
+            driver.Manage().Window.Size = new System.Drawing.Size(375, 812);
+
+            string actualResult;
+            try
+            {
+                driver.FindElement(By.Id("home-page"));
+                actualResult = "Responsive";
+            }
+            catch (NoSuchElementException)
+            {
+                actualResult = "Không có Responsive";
+            }
+
+            string expectedResult = "Responsive";
+            string result = (actualResult == expectedResult) ? "Passed" : "Failed";
+            ExcelDataProvider.WriteResultExcel("LamHuynhHoaNam_22DH112245.xlsx", "Sheet2", actualResult, result);
+            Assert.That(actualResult, Is.EqualTo(expectedResult), $"Kết quả: {actualResult}");
+        }
+
+
+
 
         [TearDown]
         public void TearDown()
